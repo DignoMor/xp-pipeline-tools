@@ -1,7 +1,8 @@
 """Exception types for the buddingScripts library API (SPEC004 slice).
 
 Encodes BuddingScriptsError / CLIInputError hierarchy, construction, and
-stable str(). Does not assert SPEC003 CLI argv / .list I/O conditions.
+stable str(). SPEC003 locks str(CLIInputError) to 'CLI input Error: …';
+CLI argv / .list I/O conditions live in test_cli_surface.py.
 """
 
 from __future__ import annotations
@@ -42,20 +43,18 @@ def test_cliInputError_stores_message_default_empty() -> None:
 
 
 def test_cliInputError_str_is_stable_prefixed_form() -> None:
-    """str(CLIInputError) is a stable prefixed form including the message."""
+    """str(CLIInputError) keeps locked prefix 'CLI input Error: …' (SPEC003 pick)."""
     _, CLIInputError = _import_exceptions()
     err = CLIInputError(message="missing flag")
     text = str(err)
     assert text == str(err)  # stable
-    assert "missing flag" in text
-    # Prefixed: not bare message alone.
-    assert text != "missing flag"
-    assert len(text) > len("missing flag")
+    assert text == "CLI input Error: missing flag"
+    assert text.startswith("CLI input Error:")
 
 
 def test_cliInputError_empty_message_str_stable() -> None:
-    """Empty-message CLIInputError still has a stable str form."""
+    """Empty-message CLIInputError still has the locked prefixed str form."""
     _, CLIInputError = _import_exceptions()
     err = CLIInputError(message="")
+    assert str(err) == "CLI input Error: "
     assert str(err) == str(err)
-    assert isinstance(str(err), str)

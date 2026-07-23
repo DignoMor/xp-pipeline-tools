@@ -91,7 +91,13 @@ class script_generator:
         self.template = text
 
     def set_argparser(self, parser: argparse.ArgumentParser) -> None:
-        """Register per-variable and template dest flags on ``parser``."""
+        """Register per-variable and template dest flags on ``parser``.
+
+        Template dests that already match a variable option name are skipped so
+        ``--<dest>`` is not registered twice (RC may expose the same name as
+        both a ``variables`` key and a ``templates`` dest).
+        """
+        variable_keys = set(self.__settings.get_keys())
         for key in self.__settings.get_keys():
             parser.add_argument(
                 "--" + key,
@@ -102,6 +108,8 @@ class script_generator:
             )
 
         for placeholder, dest in self.template_substitution_dict.items():
+            if dest in variable_keys:
+                continue
             parser.add_argument(
                 "--" + dest,
                 help="contents to substitute " + str(placeholder),
