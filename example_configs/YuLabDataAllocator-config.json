@@ -1,0 +1,6 @@
+{
+  "drives": {
+    "drive1": "/tmp/YuLabDataAllocator-example/drive1",
+    "drive2": "/tmp/YuLabDataAllocator-example/drive2"
+  }
+}

@@ -1,8 +1,11 @@
 # xp-pipeline-tools
 
-Pip-installable multi-entrypoint tools distribution. First entrypoint:
-`buddingScripts` — generate bash / Slurm / Python job scripts from a home RC
-and optional body templates.
+Pip-installable multi-entrypoint tools distribution:
+
+- `buddingScripts` — generate bash / Slurm / Python job scripts from a home RC
+  and optional body templates
+- `YuLabDataAllocator` — allocate and look up abstract branch paths across
+  configured drives
 
 ## Install
 
@@ -33,4 +36,26 @@ Library import:
 ```python
 import buddingScripts
 from buddingScripts import load_rc, script_generator, validate_rc
+```
+
+## YuLabDataAllocator
+
+Requires `YUHOME` and a config at `$YUHOME/.YuLabDataAllocator/config.json`.
+An example is in `example_configs/YuLabDataAllocator-config.json`. The SQLite
+DB defaults to `~/.YuLabDataAllocator/YuLabDataAllocator.db`.
+
+```bash
+# console script (or: python -m YuLabDataAllocator)
+YuLabDataAllocator --help
+YuLabDataAllocator allocate 3-AD/0-raw
+YuLabDataAllocator get 3-AD/0-raw
+YuLabDataAllocator delete 3-AD/0-raw
+YuLabDataAllocator ls --root 8-Reporter -s
+```
+
+Library import:
+
+```python
+import YuLabDataAllocator
+from YuLabDataAllocator import Allocator, StorageManager, TreeVisualizer
 ```
