@@ -30,3 +30,35 @@ class InvalidConfigError(ConfigError):
 
 class DrivePathError(ConfigError):
     """Raised when a drive path is not absolute or does not exist."""
+
+
+class AllocatorError(YuLabDataAllocatorError):
+    """Domain base for allocate / location / tree errors."""
+
+
+class DuplicateBranchError(AllocatorError):
+    """Raised when ``allocate`` / ``record_location`` hits a duplicate branch."""
+
+
+class BranchNotFoundError(AllocatorError):
+    """Raised when ``get_path`` / ``delete_branch`` cannot find a branch."""
+
+
+class StaleDriveError(AllocatorError):
+    """Raised when a DB ``drive_name`` is not in the loaded config."""
+
+
+class PathOutsideDrivesError(AllocatorError):
+    """Raised when mkdir/rmtree targets a path outside configured drive roots."""
+
+
+class PathNotFoundError(AllocatorError):
+    """Raised when ``remove_directory`` targets a path missing on disk."""
+
+
+class LocationNotFoundError(AllocatorError):
+    """Raised when ``delete_location`` finds no DB row for the branch."""
+
+
+class TreeError(AllocatorError):
+    """Raised for invalid tree structure (e.g. ``tree2str`` multiple roots)."""
