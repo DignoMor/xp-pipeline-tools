@@ -15,6 +15,7 @@ dev = ["pytest"]
 
 [project.scripts]
 buddingScripts = "buddingScripts.__main__:main"
+YuLabDataAllocator = "YuLabDataAllocator.__main__:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
